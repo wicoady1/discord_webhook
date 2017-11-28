@@ -1,0 +1,2 @@
+database|userid:password@tcp(db_url)/db?timeout=10s&parseTime=true
+webhook|https://discordapp.com/api/webhooks/xxxx/yyyy

@@ -1,0 +1,28 @@
+####################################################### 
+#! /bin/sh 
+# . /etc/rc.d/init.d/functions  
+# uncomment/modify for your killproc 
+#
+# Step by Step implementing service
+# 1. sudo touch /etc/init.d/agid-webhook
+# 2. sudo chmod 755 /etc/init.d/agid-webhook
+# 3. sudo update-rc.d agid-webhook defaults
+#
+# edit /home/nakama/GoWorkspace/src/github.com/wicoady1/discord-webhook/discord-webhook 
+# to your binary location
+#######################################################
+case "$1" in 
+start) 
+echo "Starting ag-id discord webhook." 
+/home/nakama/GoWorkspace/src/github.com/wicoady1/discord-webhook/discord-webhook 
+;; 
+stop) 
+echo -n "Shutting down ag-id discord webhook." 
+killproc -TERM /home/nakama/GoWorkspace/src/github.com/wicoady1/discord-webhook/discord-webhook
+;; 
+*) 
+echo "Usage: $0 {start|stop}" 
+exit 1 
+esac 
+exit 0 
+####################################################### 
