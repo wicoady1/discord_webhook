@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	"github.com/robfig/cron"
-	"github.com/wicoady1/discord-webhook/database"
-	"github.com/wicoady1/discord-webhook/webhook"
+	"github.com/wicoady1/discord_webhook/services/drs_newsfeed"
+	"github.com/wicoady1/discord_webhook/util/database"
+	"github.com/wicoady1/discord_webhook/webhook"
 )
 
 var cronTask *cron.Cron
@@ -23,9 +24,12 @@ func main() {
 		cronTask.Stop()
 	}
 
-	err := cronTask.AddFunc("0 0 0 * * *", func() {
-		content := module.GenerateContent()
-		module.SendMessage(content)
+	err := cronTask.AddFunc("0/10 * * * * *", func() {
+		/*
+			content := module.GenerateContent()
+			module.SendMessage(content)
+		*/
+		drs_newsfeed.GenerateContent()
 	})
 	if err != nil {
 		log.Println("[CRON Task]", err)
@@ -33,7 +37,7 @@ func main() {
 	}
 
 	cronTask.Start()
-	log.Println("[AG.ID Webhook Bot] Cron task is running!")
+	log.Println("[Webhook Bot] Cron task is running!")
 
-	http.ListenAndServe(":8080", nil) //dummy to enforce program to keep running
+	http.ListenAndServe(":8000", nil) //dummy to enforce program to keep running
 }

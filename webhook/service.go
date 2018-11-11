@@ -7,8 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-
-	"github.com/wicoady1/discord-webhook/database"
+	"time"
 )
 
 type Action interface {
@@ -33,9 +32,12 @@ func (wm *WebhookModule) SendMessage(content WebhookContent) {
 	req.Header.Set("X-Custom-Header", "myvalue")
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Second * 1,
+	}
 	resp, err := client.Do(req)
 	if err != nil {
+		fmt.Println(err)
 		panic(err)
 	}
 	defer resp.Body.Close()
@@ -48,30 +50,27 @@ func (wm *WebhookModule) SendMessage(content WebhookContent) {
 
 //GenerateContent - Generate Content for Webhook
 func (wm *WebhookModule) GenerateContent() WebhookContent {
-	articleList, err := database.GetPendingArticleList()
-	if err != nil {
-		log.Println("[GenerateContent]", err)
-		return WebhookContent{}
-	}
-
-	contentEmbed := []Embed{}
-	for _, v := range articleList {
-		embed := Embed{}
-
-		embed.Title = v.Title
-		embed.Description = fmt.Sprintf("Current Status: %s\nOriginally written by %s", v.Status, v.AuthorName)
-		embed.Type = "rich"
-
-		embed.Color = 16724787 //status --> Draft
-		if v.Status == "pending" {
-			embed.Color = 16777011 //status --> Pending
+	/*
+		articleList, err := database.GetPendingArticleList()
+		if err != nil {
+			log.Println("[GenerateContent]", err)
+			return WebhookContent{}
 		}
+	*/
 
-		contentEmbed = append(contentEmbed, embed)
-	}
+	fmt.Printf("masuk pak eko")
+	contentEmbed := []Embed{}
+	embed := Embed{}
+
+	embed.Title = "Test Discord DRS"
+	embed.Description = fmt.Sprintf("Test MakLO! udah connect gak?")
+	embed.Type = "rich"
+	embed.Color = 16724787 //status --> Draft
+
+	contentEmbed = append(contentEmbed, embed)
 
 	return WebhookContent{
-		Content: "@here Unpublished Article List",
+		Content: "@here MAKLO!",
 		Embeds:  contentEmbed,
 	}
 }
