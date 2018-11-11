@@ -10,11 +10,6 @@ import (
 	"time"
 )
 
-type Action interface {
-	SendMessage(WebhookContent)
-	GenerateContent() WebhookContent
-}
-
 //SendMessage - Send message to Webhook, according to provided content
 func (wm *WebhookModule) SendMessage(content WebhookContent) {
 	url := wm.Config.URL
@@ -49,7 +44,7 @@ func (wm *WebhookModule) SendMessage(content WebhookContent) {
 }
 
 //GenerateContent - Generate Content for Webhook
-func (wm *WebhookModule) GenerateContent() WebhookContent {
+func (wm *WebhookModule) GenerateContent(title string, description string) WebhookContent {
 	/*
 		articleList, err := database.GetPendingArticleList()
 		if err != nil {
@@ -58,19 +53,18 @@ func (wm *WebhookModule) GenerateContent() WebhookContent {
 		}
 	*/
 
-	fmt.Printf("masuk pak eko")
 	contentEmbed := []Embed{}
 	embed := Embed{}
 
-	embed.Title = "Test Discord DRS"
-	embed.Description = fmt.Sprintf("Test MakLO! udah connect gak?")
+	embed.Title = title
+	embed.Description = description
 	embed.Type = "rich"
 	embed.Color = 16724787 //status --> Draft
 
 	contentEmbed = append(contentEmbed, embed)
 
 	return WebhookContent{
-		Content: "@here MAKLO!",
+		Content: "@here Testing!",
 		Embeds:  contentEmbed,
 	}
 }

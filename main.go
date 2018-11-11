@@ -7,7 +7,7 @@ import (
 	"github.com/robfig/cron"
 	"github.com/wicoady1/discord_webhook/services/drs_newsfeed"
 	"github.com/wicoady1/discord_webhook/util/database"
-	"github.com/wicoady1/discord_webhook/webhook"
+	"github.com/wicoady1/discord_webhook/util/webhook"
 )
 
 var cronTask *cron.Cron
@@ -25,11 +25,7 @@ func main() {
 	}
 
 	err := cronTask.AddFunc("0/10 * * * * *", func() {
-		/*
-			content := module.GenerateContent()
-			module.SendMessage(content)
-		*/
-		drs_newsfeed.GenerateContent()
+		drs_newsfeed.GenerateContent(module)
 	})
 	if err != nil {
 		log.Println("[CRON Task]", err)
